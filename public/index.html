@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>QR Selfie</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header>
+    <div class="brand">QR Selfie</div>
+  </header>
+  <main>
+    <section class="capture">
+      <div class="preview">
+        <video id="video" playsinline autoplay></video>
+        <canvas id="canvas" class="hidden"></canvas>
+      </div>
+      <div class="controls">
+        <button id="btn-permissions">Enable Camera</button>
+        <button id="btn-switch" disabled>Switch Camera</button>
+        <button id="btn-capture" class="primary" disabled>Capture & Upload</button>
+        <label class="btn" id="file-fallback-label" for="file-fallback" style="display:none">Choose Image</label>
+        <input id="file-fallback" type="file" accept="image/*" capture="environment" style="display:none" />
+      </div>
+      <p id="status" class="status">Grant camera permission to begin.</p>
+    </section>
+
+    <section id="result" class="result hidden">
+      <div class="result-card">
+        <img id="thumb" alt="Captured selfie" />
+        <div class="qr-panel">
+          <h2>Your link</h2>
+          <a id="viewLink" target="_blank" rel="noopener"></a>
+          <h2>Share QR</h2>
+          <img id="qrImg" alt="QR code" />
+        </div>
+      </div>
+      <div class="actions">
+        <button id="btn-retake">Retake</button>
+        <a id="btn-open" class="btn" target="_blank" rel="noopener">Open Link</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <small>Works on modern browsers. On iOS, use Safari. On Android, use Chrome.</small>
+  </footer>
+
+  <script src="/main.js" type="module"></script>
+</body>
+</html>

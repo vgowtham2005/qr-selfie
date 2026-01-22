@@ -1,0 +1,17 @@
+{
+  "name": "qr-selfie",
+  "version": "1.0.0",
+  "description": "Capture a selfie, generate a QR that links to the hosted image, and show the image and QR when scanned.",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "nanoid": "^5.0.7",
+    "multer": "^1.4.5-lts.1",
+    "qrcode": "^1.5.3"
+  }
+}
