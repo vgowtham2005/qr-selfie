@@ -5,28 +5,12 @@ import { fileURLToPath } from 'url';
 import multer from 'multer';
 import { nanoid } from 'nanoid';
 import QRCode from 'qrcode';
-import os from 'os';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-function getLocalIP() {
-  const interfaces = os.networkInterfaces();
-  for (const name of Object.keys(interfaces)) {
-    for (const iface of interfaces[name]) {
-      if (iface.family === 'IPv4' && !iface.internal) {
-        return iface.address;
-      }
-    }
-  }
-  return 'localhost';
-}
-
-const LOCAL_IP = getLocalIP();
-const BASE_URL = `http://${LOCAL_IP}:${PORT}`;
 
 const PUBLIC_DIR = path.join(__dirname, 'public');
 const UPLOADS_DIR = path.join(__dirname, 'uploads');
@@ -83,7 +67,7 @@ app.post('/api/upload', upload.single('photo'), async (req, res) => {
     manifest[id] = { filename, createdAt: Date.now() };
     saveManifest(manifest);
 
-    const viewUrl = `${BASE_URL}/view/${id}`;
+    const viewUrl = `${req.protocol}://${req.get('host')}/view/${id}`;
     return res.json({ id, viewUrl });
   } catch (err) {
     console.error(err);
@@ -96,7 +80,7 @@ app.get('/api/meta/:id', (req, res) => {
   const rec = manifest[id];
   if (!rec) return res.status(404).json({ error: 'Not found' });
   const imageUrl = `/uploads/${rec.filename}`;
-  const viewUrl = `${BASE_URL}/view/${id}`;
+  const viewUrl = `${req.protocol}://${req.get('host')}/view/${id}`;
   res.json({ id, imageUrl, viewUrl });
 });
 
@@ -160,5 +144,4 @@ app.get('/view/:id', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
-  console.log(`Accessible at ${BASE_URL}`);
 });
